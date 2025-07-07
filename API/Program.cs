@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 	opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors();
+
 // =============================
 // Build the WebApplication
 // =============================
@@ -26,6 +28,17 @@ var app = builder.Build();
 // =======================================
 // Configure the HTTP request pipeline
 // =======================================
+
+// Configure CORS (Cross-Origin Resource Sharing) policy
+// This allows the API to receive requests from different origins (domains)
+app.UseCors(x => x
+    .AllowAnyHeader()   // Allows requests with any header
+    .AllowAnyMethod()   // Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    .WithOrigins(       // Restricts which domains can access the API:
+        "http://localhost:3000",  // Allow requests from local React dev server (HTTP)
+        "https://localhost:3000"  // Allow requests from local React dev server (HTTPS)
+    )
+);
 
 // Maps your API controllers' routes into the app
 // This enables the endpoints you define with [Route] and [HttpGet], etc.
