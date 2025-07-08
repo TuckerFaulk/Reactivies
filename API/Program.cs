@@ -1,5 +1,7 @@
 // Create a WebApplicationBuilder — entry point for setting up services and config
 
+using Application.Activities.Queries;
+using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 });
 
 builder.Services.AddCors();
+builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 // =============================
 // Build the WebApplication
